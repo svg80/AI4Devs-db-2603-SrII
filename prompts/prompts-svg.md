@@ -399,7 +399,7 @@ No modiques schema.prisma, sigue dándomelo por el chat.
 
 ---
 
-# Prompt  7 - 
+# Prompt  7 - Revisión schema final
 
 ```text
 Revisa el schema.prisma final y asegúrate de que todos los modelos usan Int autoincrement como PK salvo que exista una razón técnica fuerte para no hacerlo.
@@ -408,7 +408,7 @@ Devuélveme versión final lista para migrate.
 
 ---
 
-# Prompt 8 - 
+# Prompt 8 - Mejoras del schema
 
 ```text
 Usa como base el último schema.prisma generado en esta conversación.
@@ -436,48 +436,48 @@ No toques otros archivos.
 
 ---
 
-# Prompt  - 
+# Prompt 9 - Corrección revisión pr 
 
 ```text
-
+In `@backend/prisma/schema.prisma` around lines 128 - 129, Add a DB-level CHECK
+constraint to enforce salaryMin <= salaryMax for the Position model by appending
+an idempotent raw SQL block to the migration: add an ALTER TABLE "Position" ...
+ADD CONSTRAINT "Position_salary_range_chk" CHECK ("salaryMin" IS NULL OR
+"salaryMax" IS NULL OR "salaryMin" <= "salaryMax"); ensure the migration is safe
+to re-run by guarding the add (use a conditional or database-specific IF NOT
+EXISTS pattern) so the constraint name Position_salary_range_chk is used
+consistently and prevents inverted salary ranges at the DB level.
 ```
 
 ---
 
-# Prompt  - 
+# Prompt  10 - Corrección revisión pr
 
 ```text
-
+IIn `@backend/prisma/schema.prisma` around lines 89 - 94, Add createdAt and
+updatedAt timestamp fields to the InterviewType model in schema.prisma to match
+other models: declare createdAt DateTime `@default`(now()) and updatedAt DateTime
+`@updatedAt`; update the InterviewType model (symbol: InterviewType) to include
+these fields alongside id, name, description, and interviewSteps, and then
+generate/apply a follow-up migration to add these two columns to the existing
+InterviewType table in the database.
 ```
 
 ---
 
-# Prompt  - 
+# Prompt 11 - 
 
 ```text
-
+In `@backend/prisma/schema.prisma` around lines 139 - 140, The Position model's
+optional field interviewFlowId currently uses Prisma's default ON DELETE SET
+NULL behavior and should be changed to a restrictive referential action; update
+the InterviewFlow relation on the Position model (the interviewFlow /
+interviewFlowId relation) to include an explicit `@relation`(..., onDelete:
+Restrict) (or onDelete: NoAction) so deleting an InterviewFlow will be blocked
+while Positions reference it, matching companyId's behavior; after changing the
+`@relation`, run prisma migrate/dev to generate the migration and verify the
+generated SQL uses RESTRICT/NO ACTION instead of SET NULL.
 ```
 
 ---
 
-# Prompt  - 
-
-```text
-
-```
-
----
-
-# Prompt  - 
-
-```text
-
-```
-
----
-
-# Prompt  - 
-
-```text
-
-```
