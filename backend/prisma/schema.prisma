@@ -90,6 +90,8 @@ model InterviewType {
   id             Int             @id @default(autoincrement())
   name           String          @unique @db.VarChar(100)
   description    String?         @db.VarChar(500)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   interviewSteps InterviewStep[]
 }
 
@@ -137,7 +139,7 @@ model Position {
   companyId           Int
   company             Company        @relation(fields: [companyId], references: [id])
   interviewFlowId     Int?           @unique
-  interviewFlow       InterviewFlow? @relation(fields: [interviewFlowId], references: [id])
+  interviewFlow       InterviewFlow? @relation(fields: [interviewFlowId], references: [id], onDelete: Restrict)
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
   applications        Application[]

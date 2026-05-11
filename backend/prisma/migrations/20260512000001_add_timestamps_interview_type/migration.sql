@@ -1,0 +1,3 @@
+-- Add timestamps to InterviewType (idempotent)
+ALTER TABLE "InterviewType" ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE "InterviewType" ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP(3) NOT NULL;
